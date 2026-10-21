@@ -17,7 +17,7 @@ Por defecto escucha en el puerto `8081` para no interferir con la API principal.
 - `GET /api/tareas`: listar.
 - `GET /api/tareas/{id}`: consultar una.
 - `POST /api/tareas`: crear.
-- `PUT /api/tareas/{id}`: editar título, descripción y prioridad.
-- `DELETE /api/tareas/{id}`: eliminar.
+- `PUT /api/tareas/{id}`: editar título, descripción, estado, usuario asignado y fechas.
+- `DELETE /api/tareas/{id}`: baja lógica (`fechaeliminacion`).
 
-Esta versión base no incluye todavía autenticación, roles, asignación ni historial.
+La persistencia usa las tablas `roles`, `estados`, `usuarios` y `tareas`. Crear una tarea exige el id de un estado y el id de un usuario creador que ya existan. No incluye todavía autenticación.

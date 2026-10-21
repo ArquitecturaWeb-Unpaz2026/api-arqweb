@@ -60,7 +60,7 @@ public class TareaController {
         return ResponseEntity.ok(tareaService.actualizar(id, tarea));
     }
 
-    /** DELETE /api/tareas/{id}: elimina el recurso y responde 204 No Content. */
+    /** DELETE /api/tareas/{id}: marca fechaeliminacion y responde 204 No Content. */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         tareaService.eliminar(id);

@@ -4,13 +4,13 @@ server:
 spring:
   datasource:
     # URL y credenciales externos al código: configuración por ambiente.
-    url: ${DB_URL:jdbc:mysql://localhost:3306/taskmanager}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/arqweb}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:}
   jpa:
     hibernate:
-      # Para esta etapa inicial JPA crea/actualiza tablas desde las entidades.
-      ddl-auto: ${DDL_AUTO:update}
+      # El esquema ya existe en MySQL. Hibernate no crea ni altera esas tablas.
+      ddl-auto: ${DDL_AUTO:none}
     # Evita mantener abierta la sesión JPA durante toda la respuesta web.
     open-in-view: false
     properties:

@@ -15,12 +15,12 @@ public interface TareaService {
     /** Busca una tarea por su clave o informa que no existe. */
     Tarea buscarPorId(Long id);
 
-    /** Crea una tarea nueva e inicia su estado como PENDIENTE. */
+    /** Crea una tarea nueva ligada a un estado y a un creador ya persistidos. */
     Tarea crear(Tarea tarea);
 
     /** Actualiza los campos editables de una tarea existente. */
     Tarea actualizar(Long id, Tarea datos);
 
-    /** Elimina la tarea indicada si existe. */
+    /** Marca fechaeliminacion de la tarea indicada si existe. */
     void eliminar(Long id);
 }

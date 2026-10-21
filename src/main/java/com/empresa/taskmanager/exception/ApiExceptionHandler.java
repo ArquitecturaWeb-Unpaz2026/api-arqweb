@@ -31,4 +31,12 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(status).body(new ErrorResponse(
                 Instant.now(), status.value(), status.getReasonPhrase(), exception.getMessage()));
     }
+
+    /** Convierte un dato de entrada incompleto en una respuesta REST 400 Bad Request. */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> solicitudInvalida(IllegalArgumentException exception) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(new ErrorResponse(
+                Instant.now(), status.value(), status.getReasonPhrase(), exception.getMessage()));
+    }
 }

@@ -9,7 +9,7 @@ En esta primera iteración organicé un backend en capas e implementé CRUD para
 | Presentación / API REST | `controller/TareaController.java` | Recibe métodos HTTP, rutas y JSON; responde con códigos de estado y JSON. No contiene consultas SQL. |
 | Negocio / aplicación | `service/interfaces/TareaService.java`, `service/impl/TareaServiceImpl.java` | Define y ejecuta casos de uso. Decide el estado inicial, selecciona los campos que pueden editarse y trata la ausencia de una tarea. |
 | Acceso a datos | `repository/TareaRepository.java` | Abstrae las operaciones contra la base. Spring Data JPA genera la implementación CRUD. |
-| Dominio / persistencia | `model/Tarea.java`, `EstadoTarea.java`, `Prioridad.java` | Representa la entidad y las reglas/valores propios de las tareas. JPA relaciona la clase con la tabla. |
+| Dominio / persistencia | `model/Tarea.java`, `Estado.java`, `Rol.java`, `Usuario.java` | Mapea las clases a las tablas `tareas`, `estados`, `roles` y `usuarios` ya creadas en MySQL. |
 | Manejo transversal | `exception/ApiExceptionHandler.java` | Traduce errores de negocio a una respuesta HTTP uniforme. |
 
 ## Recorrido de una petición
@@ -19,7 +19,7 @@ Por ejemplo, al enviar `POST /api/tareas` con JSON:
 1. Spring MVC encuentra el método del controlador asociado a `POST /api/tareas`.
 2. Jackson convierte el JSON al objeto Java `Tarea` y Jakarta Validation revisa los campos obligatorios.
 3. El controlador delega al contrato `TareaService`; no decide cómo persistir.
-4. `TareaServiceImpl` fija `PENDIENTE` como estado inicial y llama a `TareaRepository`.
+4. `TareaServiceImpl` resuelve el estado y el creador contra las tablas existentes y llama a `TareaRepository`.
 5. Spring Data JPA/Hibernate convierte la entidad en una operación SQL para MySQL.
 6. El controlador devuelve `201 Created`, el objeto creado y una cabecera `Location` con su URL.
 
@@ -42,4 +42,4 @@ Primero definí el recurso y sus datos (`Tarea`); después agregué el contrato 
 
 ## Decisiones de alcance
 
-Esta etapa no implementa login, JWT, roles, técnicos, asignaciones ni historial. El CRUD está preparado como base para agregarlos después sin mezclar esas funciones con la primera implementación. Para un sistema expuesto en producción también se incorporarán DTOs, autorización por rol, paginación, migraciones versionadas y reglas de transición de estados.
+Esta etapa no implementa login ni JWT. La tarea se guarda en las tablas ya creadas y se relaciona con `estados`, `usuarios` y `roles`. Para un sistema expuesto en producción también se incorporarán DTOs, autorización por rol, paginación y reglas de transición de estados.
