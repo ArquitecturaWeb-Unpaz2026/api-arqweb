@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- Coordenadas Maven del proyecto que permiten identificar y empaquetar esta aplicación. -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.empresa</groupId>
+  <artifactId>taskmanager-base</artifactId>
+  <version>0.1.0</version>
+  <!-- Spring Boot administra versiones compatibles de las dependencias comunes. -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.5</version>
+    <relativePath/>
+  </parent>
+  <!-- El código se compila para Java 17, como pide el stack del trabajo práctico. -->
+  <properties><java.version>17</java.version></properties>
+  <dependencies>
+    <!-- Spring MVC publica endpoints HTTP y serializa JSON para el cliente. -->
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+    <!-- Spring Data JPA y Hibernate implementan el mapeo objeto-relacional. -->
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>
+    <!-- Jakarta Validation verifica los datos entrantes en el borde de la API. -->
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-validation</artifactId></dependency>
+    <!-- Driver JDBC de PostgreSQL requerido en tiempo de ejecución. -->
+    <dependency><groupId>org.postgresql</groupId><artifactId>postgresql</artifactId><scope>runtime</scope></dependency>
+  </dependencies>
+  <!-- Empaqueta la aplicación en un JAR ejecutable con java -jar. -->
+  <build><plugins><plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin></plugins></build>
+</project>
