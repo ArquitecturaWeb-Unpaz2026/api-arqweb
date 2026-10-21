@@ -1,6 +1,8 @@
 # Puerto HTTP del backend; se puede cambiar desde SERVER_PORT sin editar código.
 server:
   port: ${SERVER_PORT:8081}
+  # Caddy termina TLS y manda X-Forwarded-Proto. Así Swagger publica https.
+  forward-headers-strategy: framework
 spring:
   datasource:
     # URL y credenciales externos al código: configuración por ambiente.
@@ -16,3 +18,9 @@ spring:
     properties:
       # Normaliza las fechas de persistencia para almacenarlas en UTC.
       hibernate.jdbc.time_zone: UTC
+
+app:
+  jwt:
+    # Clave HMAC. En el servidor viene de JWT_SECRET y tiene que medir al menos 32 bytes.
+    secret: ${JWT_SECRET:dev-only-secret-cambiar-en-despliegue-32b}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}

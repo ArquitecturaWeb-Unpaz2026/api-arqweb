@@ -42,4 +42,4 @@ Primero definí el recurso y sus datos (`Tarea`); después agregué el contrato 
 
 ## Decisiones de alcance
 
-Esta etapa no implementa login ni JWT. La tarea se guarda en las tablas ya creadas y se relaciona con `estados`, `usuarios` y `roles`. Para un sistema expuesto en producción también se incorporarán DTOs, autorización por rol, paginación y reglas de transición de estados.
+El login compara la contraseña con BCrypt y entrega un JWT. Swagger documenta las rutas en `/swagger-ui.html`. La tarea se guarda en las tablas ya creadas y se relaciona con `estados`, `usuarios` y `roles`. Para un sistema expuesto en producción también se incorporarán autorización fina por rol, paginación y reglas de transición de estados.

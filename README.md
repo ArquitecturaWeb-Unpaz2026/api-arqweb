@@ -14,10 +14,15 @@ Por defecto escucha en el puerto `8081` para no interferir con la API principal.
 
 ## Rutas
 
-- `GET /api/tareas`: listar.
+- `POST /api/auth/registro`: crea un usuario. La contraseña se guarda con BCrypt y no vuelve en la respuesta.
+- `POST /api/auth/login`: devuelve un JWT (`Authorization: Bearer`).
+- `GET /swagger-ui.html`: documentación interactiva.
+- `GET /api/tareas`: listar. Exige token.
 - `GET /api/tareas/{id}`: consultar una.
 - `POST /api/tareas`: crear.
 - `PUT /api/tareas/{id}`: editar título, descripción, estado, usuario asignado y fechas.
 - `DELETE /api/tareas/{id}`: baja lógica (`fechaeliminacion`).
 
-La persistencia usa las tablas `roles`, `estados`, `usuarios` y `tareas`. Crear una tarea exige el id de un estado y el id de un usuario creador que ya existan. No incluye todavía autenticación.
+La persistencia usa las tablas `roles`, `estados`, `usuarios` y `tareas`. Crear una tarea exige el id de un estado y el id de un usuario creador que ya existan. El registro exige un rol existente. Las rutas de tareas exigen el token del login.
+
+`JWT_SECRET` tiene que medir al menos 32 bytes. Por defecto el token dura 24 horas.

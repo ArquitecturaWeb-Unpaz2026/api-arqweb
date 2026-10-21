@@ -2,6 +2,8 @@ package com.empresa.taskmanager.controller;
 
 import com.empresa.taskmanager.model.Tarea;
 import com.empresa.taskmanager.service.interfaces.TareaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,8 @@ import java.util.List;
  * Adaptador HTTP de la API REST. Convierte solicitudes y respuestas JSON en
  * llamadas al servicio; así la capa web no contiene reglas de persistencia.
  */
+@Tag(name = "Tareas")
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/tareas")
 public class TareaController {

@@ -1,6 +1,7 @@
 package com.empresa.taskmanager.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,6 +31,14 @@ public class ApiExceptionHandler {
         HttpStatus status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(new ErrorResponse(
                 Instant.now(), status.value(), status.getReasonPhrase(), exception.getMessage()));
+    }
+
+    /** No revela si falló el email o la contraseña. */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> credencialesInvalidas(BadCredentialsException exception) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        return ResponseEntity.status(status).body(new ErrorResponse(
+                Instant.now(), status.value(), status.getReasonPhrase(), "Email o contraseña incorrectos"));
     }
 
     /** Convierte un dato de entrada incompleto en una respuesta REST 400 Bad Request. */
