@@ -8,6 +8,7 @@ import com.empresa.taskmanager.repository.EstadoRepository;
 import com.empresa.taskmanager.repository.TareaRepository;
 import com.empresa.taskmanager.repository.UsuarioRepository;
 import com.empresa.taskmanager.service.interfaces.TareaService;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +28,18 @@ public class TareaServiceImpl implements TareaService {
     private final TareaRepository tareaRepository;
     private final EstadoRepository estadoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final EntityManager entityManager;
 
     /** Spring entrega las implementaciones JPA de los repositorios al crear el servicio. */
     public TareaServiceImpl(
             TareaRepository tareaRepository,
             EstadoRepository estadoRepository,
-            UsuarioRepository usuarioRepository) {
+            UsuarioRepository usuarioRepository,
+            EntityManager entityManager) {
         this.tareaRepository = tareaRepository;
         this.estadoRepository = estadoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.entityManager = entityManager;
     }
 
     /** Consulta las tareas vigentes mediante la abstracción Spring Data JPA. */
@@ -62,7 +66,10 @@ public class TareaServiceImpl implements TareaService {
         tarea.setEstado(estadoExistente(tarea.getEstado()));
         tarea.setCreador(usuarioObligatorio(tarea.getCreador(), "idcreador"));
         tarea.setUsuario(usuarioOpcional(tarea.getUsuario()));
-        return tareaRepository.save(tarea);
+        Tarea guardada = tareaRepository.saveAndFlush(tarea);
+        // fechacreacion la completa MySQL; hay que releerla para devolverla en el 201.
+        entityManager.refresh(guardada);
+        return guardada;
     }
 
     /** Copia solo los campos editables para proteger ID, creador y fecha de alta. */
