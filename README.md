@@ -4,7 +4,7 @@ Versión inicial del backend principal. Contiene el modelo `Tarea`, su repositor
 
 ## Ejecutar
 
-Requiere Java 17 o superior y PostgreSQL. Desde esta carpeta, configurar `DB_URL`, `DB_USERNAME` y `DB_PASSWORD` si la base no está en los valores por defecto, y ejecutar:
+Requiere Java 17 o superior y MySQL. Desde esta carpeta, configurar `DB_URL`, `DB_USERNAME` y `DB_PASSWORD` si la base no está en los valores por defecto, y ejecutar:
 
 ```powershell
 mvn spring-boot:run

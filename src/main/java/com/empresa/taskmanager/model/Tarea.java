@@ -16,7 +16,7 @@ import java.time.Instant;
 @Table(name = "tareas")
 public class Tarea {
 
-    /** Clave primaria generada por PostgreSQL; identifica cada recurso. */
+    /** Clave primaria generada por MySQL; identifica cada recurso. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

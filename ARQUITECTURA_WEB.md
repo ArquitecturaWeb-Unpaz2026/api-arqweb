@@ -1,6 +1,6 @@
 # Relación con Arquitectura Web
 
-En esta primera iteración organicé un backend en capas e implementé CRUD para el recurso `Tarea`. Apliqué contenidos de Arquitectura Web para mostrar cómo una solicitud viaja desde HTTP hasta PostgreSQL y cómo se separan las responsabilidades.
+En esta primera iteración organicé un backend en capas e implementé CRUD para el recurso `Tarea`. Apliqué contenidos de Arquitectura Web para mostrar cómo una solicitud viaja desde HTTP hasta MySQL y cómo se separan las responsabilidades.
 
 ## Capas y responsabilidades
 
@@ -20,7 +20,7 @@ Por ejemplo, al enviar `POST /api/tareas` con JSON:
 2. Jackson convierte el JSON al objeto Java `Tarea` y Jakarta Validation revisa los campos obligatorios.
 3. El controlador delega al contrato `TareaService`; no decide cómo persistir.
 4. `TareaServiceImpl` fija `PENDIENTE` como estado inicial y llama a `TareaRepository`.
-5. Spring Data JPA/Hibernate convierte la entidad en una operación SQL para PostgreSQL.
+5. Spring Data JPA/Hibernate convierte la entidad en una operación SQL para MySQL.
 6. El controlador devuelve `201 Created`, el objeto creado y una cabecera `Location` con su URL.
 
 ## Conceptos aplicados

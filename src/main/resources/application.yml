@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     # URL y credenciales externos al código: configuración por ambiente.
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/taskmanager}
-    username: ${DB_USERNAME:taskmanager}
-    password: ${DB_PASSWORD:taskmanager}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/taskmanager}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
   jpa:
     hibernate:
       # Para esta etapa inicial JPA crea/actualiza tablas desde las entidades.
