@@ -26,3 +26,7 @@ Por defecto escucha en el puerto `8081` para no interferir con la API principal.
 La persistencia usa las tablas `roles`, `estados`, `usuarios` y `tareas`. Crear una tarea exige el id de un estado y el id de un usuario creador que ya existan. El registro exige un rol existente. Las rutas de tareas exigen el token del login.
 
 `JWT_SECRET` tiene que medir al menos 32 bytes. Por defecto el token dura 24 horas.
+
+## Diseño en memoria
+
+La rama `backend-a-revisar` quedó mergeada en el paquete `com.empresa.memoria`. Ahí vive el flujo de tareas técnicas (asignación, derivación a grupo, toma, trabajo y resolución) guardado en listas. No se publica en la API desplegada: esa sigue usando MySQL, BCrypt y JWT. Las pruebas de ese diseño se corren con `mvn test`.
