@@ -9,11 +9,15 @@ import com.empresa.taskmanager.repository.TareaRepository;
 import com.empresa.taskmanager.repository.UsuarioRepository;
 import com.empresa.taskmanager.service.interfaces.TareaService;
 import jakarta.persistence.EntityManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Implementación de reglas básicas del caso de uso CRUD.
@@ -72,10 +76,22 @@ public class TareaServiceImpl implements TareaService {
         return guardada;
     }
 
-    /** Copia solo los campos editables para proteger ID, creador y fecha de alta. */
+    /**
+     * El administrador edita todos los campos. Un integrante solo puede
+     * cambiar el estado de una tarea propia: no reasigna ni borra.
+     */
     @Override
     public Tarea actualizar(Long id, Tarea datos) {
         Tarea existente = buscarPorId(id);
+        if (!esAdmin()) {
+            if (!esTareaPropia(existente, actor())) {
+                throw new AccessDeniedException("No tiene permiso para modificar esta tarea");
+            }
+            if (datos.getEstado() != null) {
+                existente.setEstado(estadoExistente(datos.getEstado()));
+            }
+            return tareaRepository.save(existente);
+        }
         existente.setTitulo(datos.getTitulo());
         existente.setDescripcion(datos.getDescripcion());
         if (datos.getEstado() != null) {
@@ -96,6 +112,29 @@ public class TareaServiceImpl implements TareaService {
         Tarea existente = buscarPorId(id);
         existente.setFechaEliminacion(Instant.now());
         tareaRepository.save(existente);
+    }
+
+    private boolean esAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) return false;
+        return auth.getAuthorities().stream()
+                .anyMatch(autoridad -> "ROLE_ADMIN".equals(autoridad.getAuthority()));
+    }
+
+    private Usuario actor() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getName() == null) {
+            throw new AccessDeniedException("No hay sesión activa");
+        }
+        return usuarioRepository.findByEmail(auth.getName())
+                .filter(usuario -> usuario.getFechaEliminacion() == null)
+                .orElseThrow(() -> new AccessDeniedException("No hay sesión activa"));
+    }
+
+    private boolean esTareaPropia(Tarea tarea, Usuario usuario) {
+        boolean asignada = tarea.getUsuario() != null && Objects.equals(tarea.getUsuario().getId(), usuario.getId());
+        boolean creada = tarea.getCreador() != null && Objects.equals(tarea.getCreador().getId(), usuario.getId());
+        return asignada || creada;
     }
 
     /** Resuelve idestado contra la tabla estados. */

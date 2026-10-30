@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -39,8 +40,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken autenticacion = new UsernamePasswordAuthenticationToken(
                         usuario, null, usuario.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(autenticacion);
-            } catch (JwtException | IllegalArgumentException ignored) {
-                // Token inválido: la ruta protegida responde 401 más adelante.
+            } catch (JwtException | IllegalArgumentException | UsernameNotFoundException ignored) {
+                // Token inválido o usuario dado de baja: la ruta protegida responde 401.
             }
         }
         filterChain.doFilter(request, response);

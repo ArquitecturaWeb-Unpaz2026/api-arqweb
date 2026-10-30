@@ -40,6 +40,10 @@ public class Usuario {
     @Column(name = "fechacreacion", insertable = false, updatable = false)
     private Instant fechaCreacion;
 
+    /** Marca de baja lógica. NULL significa que el usuario sigue vigente. */
+    @Column(name = "fechaeliminacion")
+    private Instant fechaEliminacion;
+
     /** Constructor sin argumentos requerido por JPA. */
     public Usuario() {
     }
@@ -55,4 +59,6 @@ public class Usuario {
     public Rol getRol() { return rol; }
     public void setRol(Rol rol) { this.rol = rol; }
     public Instant getFechaCreacion() { return fechaCreacion; }
+    public Instant getFechaEliminacion() { return fechaEliminacion; }
+    public void setFechaEliminacion(Instant fechaEliminacion) { this.fechaEliminacion = fechaEliminacion; }
 }

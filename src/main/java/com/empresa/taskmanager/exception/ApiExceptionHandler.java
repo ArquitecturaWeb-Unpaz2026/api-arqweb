@@ -1,6 +1,7 @@
 package com.empresa.taskmanager.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +40,14 @@ public class ApiExceptionHandler {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(new ErrorResponse(
                 Instant.now(), status.value(), status.getReasonPhrase(), "Email o contraseña incorrectos"));
+    }
+
+    /** Un integrante no puede reasignar, borrar ni editar tareas ajenas. */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> prohibido(AccessDeniedException exception) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        return ResponseEntity.status(status).body(new ErrorResponse(
+                Instant.now(), status.value(), status.getReasonPhrase(), "No tiene permiso para esta operación"));
     }
 
     /** Convierte un dato de entrada incompleto en una respuesta REST 400 Bad Request. */

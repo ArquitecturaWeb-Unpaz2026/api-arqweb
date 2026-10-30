@@ -21,6 +21,7 @@ public class UsuarioDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
+                .filter(encontrado -> encontrado.getFechaEliminacion() == null)
                 .orElseThrow(() -> new UsernameNotFoundException("No existe el usuario"));
         String autoridad = "ROLE_" + usuario.getRol().getNombre().replace(' ', '_');
         return User.withUsername(usuario.getEmail())
